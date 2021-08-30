@@ -1,0 +1,45 @@
+:root {
+    --primary: rgb(63, 32, 88);
+    --secondary: rgb(179, 46, 184);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1em;
+    margin: 0 30px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+header button {
+    outline: none;
+    border: none;
+    background-color: white;
+    color: var(--secondary);
+}
+
+div {
+    width: 60%;
+    margin: 0 auto;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-align: center;
+}
+
+div h1 {
+    font-size: 2.5em;
+}
+
+div p {
+    font-size: 1.5em;
+}
+
+div button {
+    font-size: 1.3em;
+    outline: none;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: white;
+    background-color: var(--primary);
+}
