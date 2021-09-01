@@ -1,6 +1,6 @@
-var time = 75;
+var timeLeft = 10;
 var timerEl = document.querySelector("#timer");
-timerEl.textContent = "Time: " + time;
+timerEl.textContent = "Time: " + timeLeft;
 var divEl = document.querySelector("div.content");
 var introEl = document.querySelector("#intro");
 var startButton = document.querySelector("#start-btn");
@@ -19,26 +19,30 @@ var questions = [
 ];
 var questionNumber = 0;
 var choiceButton = [];
-var choice = ["1. strings", "2. booleans", "3. alerts", "4. numbers"];
+var choices = ["1. strings", "2. booleans", "3. alerts", "4. numbers"];
 
 function startTimer() {
-    setInterval(function() {
-        time--;
-        timerEl.textContent = "Time: " + time;
-    }, 1000);
+    //setInterval(function() {
+        timeLeft--;
+        timerEl.textContent = "Time: " + timeLeft; 
+    //}, 1000);
+    
 }
 
 function displayQuestion() {
     // display question in h1El
     h1El.textContent = questions[questionNumber];
 
-    // display answer choices
 
 }
 
 startButton.addEventListener("click", function() {
     // start timer
-    startTimer();
+    var startTimerInterval = setInterval(startTimer, 1000);
+
+    if(timeLeft === 0) {
+        clearInterval(startTimerInterval);
+    };
 
     // remove startButton and opening instructions
     startButton.remove();
@@ -46,15 +50,25 @@ startButton.addEventListener("click", function() {
 
     // add .question class to h1
     h1El.className = "question";
-
+    
     // create buttons for answer choices
     for(var i = 0; i < 4; i++) {
         choiceButton[i] = document.createElement("button");
-        choiceButton[i].textContent = choice[i];
+        choiceButton[i].textContent = choices[i];
         choiceButton[i].className = "choiceButton";
+        // set correct answer button
+        if(i === 2) {
+            choiceButton[i].id = "answer";
+        };
         divEl.appendChild(choiceButton[i]);
     }
 
     // display question 1
     displayQuestion();
-})
+});
+
+function correct() {
+    questionNumber++;
+
+    displayQuestion();
+}
