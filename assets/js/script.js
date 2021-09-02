@@ -21,6 +21,9 @@ var questionNumber = 0;
 var choiceButton = [];
 var choices = ["1. strings", "2. booleans", "3. alerts", "4. numbers"];
 
+var answerButton = document.createElement("button");
+answerButton.id = "answer";
+
 function startTimer() {
     //setInterval(function() {
         timeLeft--;
@@ -53,14 +56,17 @@ startButton.addEventListener("click", function() {
     
     // create buttons for answer choices
     for(var i = 0; i < 4; i++) {
-        choiceButton[i] = document.createElement("button");
-        choiceButton[i].textContent = choices[i];
-        choiceButton[i].className = "choiceButton";
-        // set correct answer button
-        if(i === 2) {
-            choiceButton[i].id = "answer";
-        };
-        divEl.appendChild(choiceButton[i]);
+        if(i != 2) {
+            choiceButton[i] = document.createElement("button");
+            choiceButton[i].textContent = choices[i];
+            choiceButton[i].className = "choiceButton";
+            divEl.appendChild(choiceButton[i]);
+        }
+        else {
+            answerButton.textContent = choices[i];
+            answerButton.className = "choiceButton";
+            divEl.appendChild(answerButton);
+        }
     }
 
     // display question 1
@@ -72,3 +78,5 @@ function correct() {
 
     displayQuestion();
 }
+
+answerButton.addEventListener("click", correct);
