@@ -1,6 +1,8 @@
 # Code Quiz
 A timed quiz on the fundamentals of Javascript that saves high scores.
 
+<img src="./assets/images/code-quiz-screenshot.PNG" />
+
 ## Timer
 When the user clicks the start button, a timer starts and the first question is presented.
 - If the user answers correctly, the next question is presented.
