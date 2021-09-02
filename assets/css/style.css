@@ -45,20 +45,27 @@ div p.game-over {
     font-size: 2em;
 }
 
-div #prompt {
-    width: 50%;
-}
-
 div.initials {
     display: flex;
+    width: 100%;
     margin: 0px;
     align-items: center;
 }
 
+div #prompt {
+    width: 25%;
+}
+
 div input {
-    width: 50%;
+    width: 30%;
     height: fit-content;
     font-size: 1.5em;
+    margin-right: 25px;
+}
+
+div #submit {
+    margin: 0;
+    width: 15%;
 }
 
 div button {

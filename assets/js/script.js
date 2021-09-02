@@ -148,6 +148,7 @@ function gameOver() {
     var submitButtonEl = document.createElement("button");
     submitButtonEl.setAttribute("type", "submit");
     submitButtonEl.textContent = "Submit";
+    submitButtonEl.id = "submit";
     console.log(submitButtonEl);
     initialDivEl.appendChild(submitButtonEl);
 }
