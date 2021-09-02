@@ -11,11 +11,11 @@ var questions = [
     // question 2
     { q: "The condition in an if/else statement is enclosed with:", a: "3. parentheses"},
     // question 3
-    { q: "Arrays in JavaScript can be used to store ______.", a: ""},
+    { q: "Arrays in JavaScript can be used to store ______.", a: "4. all of the above"},
     //question 4
-    { q: "String values must be enclosed with ______ when being assigned to variables.", a: ""},
+    { q: "String values must be enclosed with ______ when being assigned to variables.", a: "3. quotes"},
     // question 5
-    { q: "A very useful tool during development and debugging for printing content to the debugger is:", a: ""},
+    { q: "A very useful tool during development and debugging for printing content to the debugger is:", a: "4. console.log"},
 ];
 
 var questionNumber = 0;
@@ -23,18 +23,17 @@ var choiceButton = [];
 var choices = [
     ["1. strings", "2. booleans", "3. alerts", "4. numbers"], 
     ["1. quotes", "2. curly brackets", "3. parentheses", "4. square brackets"], 
-    ["1. ", "2. ", "3. ", "4. "],
-    ["1. ", "2. ", "3. ", "4. "],
-    ["1. ", "2. ", "3. ", "4. "]
+    ["1. numbers and strings", "2. other arrays", "3. booleans", "4. all of the above"],
+    ["1. commas", "2. curly brackets", "3. quotes", "4. parentheses"],
+    ["1. JavaScript", "2. terminal/bash", "3. for loops", "4. console.log"]
 ];
 
 function startTimer() {
     var timerInterval = setInterval(function() {
         timeLeft--;
         timerEl.textContent = "Time: " + timeLeft;
-        if(timeLeft === 0) {
+        if(timeLeft === 0 || questionNumber === 5) {
             clearInterval(timerInterval);
-            gameOver();
         }
     }, 1000);
 }
@@ -85,14 +84,15 @@ function correct() {
     }
     else {
         displayQuestion();
-        // tell user they are correct
-        var correctMessageEl = document.createElement("h2");
-        correctMessageEl.textContent = "Correct!";
-        divEl.appendChild(correctMessageEl);
-
-        // remove message after 1 second
-        setTimeout(removeMessage, 1000);
     }
+
+    // tell user they are correct
+    var correctMessageEl = document.createElement("h2");
+    correctMessageEl.textContent = "Correct!";
+    divEl.appendChild(correctMessageEl);
+
+    // remove message after 1 second
+    setTimeout(removeMessage, 1000);
 }
 
 function incorrect() {
@@ -105,21 +105,29 @@ function incorrect() {
     }
     else {
         displayQuestion();
-        // tell user they are incorrect
-        var incorrectMessageEl = document.createElement("h2");
-        incorrectMessageEl.textContent = "Wrong!";
-        divEl.appendChild(incorrectMessageEl);
-
-        // remove message after 1 second
-        setTimeout(removeMessage, 1000);
+        
     }
+
+    // tell user they are incorrect
+    var incorrectMessageEl = document.createElement("h2");
+    incorrectMessageEl.textContent = "Wrong!";
+    divEl.appendChild(incorrectMessageEl);
+
+    // remove message after 1 second
+    setTimeout(removeMessage, 1000);
 }
 
 function gameOver() {
     h1El.textContent = "All done!";
+    var choiceButtonEl = document.getElementsByClassName("choiceButton");
     var scoreStatementEl = document.createElement("p");
     scoreStatementEl.textContent = "Your score is: " + timeLeft;
-    divEl.appendChild(scoreStatementEl);
+
+    // input intials to save score
+}
+
+if(timeLeft === 0) {
+    gameOver();
 }
 
 divEl.addEventListener("click", function(event) {
