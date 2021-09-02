@@ -58,3 +58,14 @@ div button.choiceButton {
     margin: 10px;
     text-align: left;
 }
+
+div h2 {
+    opacity: 0.5;
+    font-weight: normal;
+    font-style: italic;
+    font-size: 2em;
+    text-align: left;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid black;
+}

@@ -1,4 +1,4 @@
-var timeLeft = 10;
+var timeLeft = 75;
 var timerEl = document.querySelector("#timer");
 timerEl.textContent = "Time: " + timeLeft;
 var divEl = document.querySelector("div.content");
@@ -21,9 +21,6 @@ var questions = [
 var questionNumber = 0;
 var choiceButton = [];
 var choices = ["1. strings", "2. booleans", "3. alerts", "4. numbers", "1. quotes", "2. curly brackets", "3. parentheses", "4. square brackets"];
-
-var answerButton = document.createElement("button");
-answerButton.id = "answer";
 
 function startTimer() {
     var timerInterval = setInterval(function() {
@@ -60,32 +57,65 @@ startButton.addEventListener("click", function() {
     
     // create buttons for answer choices
     for(var i = 0; i < 4; i++) {
-        if(i != 2) {
             choiceButton[i] = document.createElement("button");
             choiceButton[i].textContent = choices[i];
             choiceButton[i].className = "choiceButton";
             divEl.appendChild(choiceButton[i]);
-        }
-        else {
-            answerButton.textContent = choices[i];
-            answerButton.className = "choiceButton";
-            divEl.appendChild(answerButton);
-        }
     }
 
     // display question 1
     displayQuestion();
 });
 
+function removeMessage() {
+    var h2El = document.querySelector("h2");
+    h2El.remove();
+}
+
 function correct() {
     questionNumber++;
 
     displayQuestion();
+    // tell user they are correct
+    var correctMessageEl = document.createElement("h2");
+    correctMessageEl.textContent = "Correct!";
+    divEl.appendChild(correctMessageEl);
+
+    // remove message after 2 seconds
+    setTimeout(removeMessage, 2000);
+}
+
+function incorrect() {
+    questionNumber++;
+    // decrease time by 10 seconds for penalty
+    timeLeft -= 10;
+
+    displayQuestion();
+    // tell user they are incorrect
+    var incorrectMessageEl = document.createElement("h2");
+    incorrectMessageEl.textContent = "Wrong!";
+    divEl.appendChild(incorrectMessageEl);
+
+    // remove message after 2 seconds
+    setTimeout(removeMessage, 2000);
 }
 
 function gameOver() {
     h1El.textContent = "All done!";
-
+    var scoreStatementEl = document.createElement("p");
+    scoreStatementEl.textContent = "Your score is: " + timeLeft;
+    divEl.appendChild(scoreStatementEl);
 }
 
-answerButton.addEventListener("click", correct);
+divEl.addEventListener("click", function(event) {
+    var userChoice = event.target;
+    if(userChoice.className != "choiceButton") {
+        return;
+    }
+    else if(userChoice.textContent === questions[questionNumber].a) {
+        correct();
+    }
+    else {
+        incorrect();
+    }
+});
