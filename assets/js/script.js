@@ -20,7 +20,13 @@ var questions = [
 
 var questionNumber = 0;
 var choiceButton = [];
-var choices = ["1. strings", "2. booleans", "3. alerts", "4. numbers", "1. quotes", "2. curly brackets", "3. parentheses", "4. square brackets"];
+var choices = [
+    ["1. strings", "2. booleans", "3. alerts", "4. numbers"], 
+    ["1. quotes", "2. curly brackets", "3. parentheses", "4. square brackets"], 
+    ["1. ", "2. ", "3. ", "4. "],
+    ["1. ", "2. ", "3. ", "4. "],
+    ["1. ", "2. ", "3. ", "4. "]
+];
 
 function startTimer() {
     var timerInterval = setInterval(function() {
@@ -37,10 +43,10 @@ function displayQuestion() {
     // display question in h1El
     h1El.textContent = questions[questionNumber].q;
     
-
-    // for(var i = 4; i < 8; i++) {
-
-    // }
+    // display answer choices
+    for(var i = 0; i < 4; i++) {
+        choiceButton[i].textContent = choices[questionNumber][i];
+    }
 
 }
 
@@ -58,11 +64,10 @@ startButton.addEventListener("click", function() {
     // create buttons for answer choices
     for(var i = 0; i < 4; i++) {
             choiceButton[i] = document.createElement("button");
-            choiceButton[i].textContent = choices[i];
+            choiceButton[i].textContent = choices[questionNumber][i];
             choiceButton[i].className = "choiceButton";
             divEl.appendChild(choiceButton[i]);
     }
-
     // display question 1
     displayQuestion();
 });
@@ -75,14 +80,19 @@ function removeMessage() {
 function correct() {
     questionNumber++;
 
-    displayQuestion();
-    // tell user they are correct
-    var correctMessageEl = document.createElement("h2");
-    correctMessageEl.textContent = "Correct!";
-    divEl.appendChild(correctMessageEl);
+    if(questionNumber === 5) {
+        gameOver();
+    }
+    else {
+        displayQuestion();
+        // tell user they are correct
+        var correctMessageEl = document.createElement("h2");
+        correctMessageEl.textContent = "Correct!";
+        divEl.appendChild(correctMessageEl);
 
-    // remove message after 2 seconds
-    setTimeout(removeMessage, 2000);
+        // remove message after 1 second
+        setTimeout(removeMessage, 1000);
+    }
 }
 
 function incorrect() {
@@ -90,14 +100,19 @@ function incorrect() {
     // decrease time by 10 seconds for penalty
     timeLeft -= 10;
 
-    displayQuestion();
-    // tell user they are incorrect
-    var incorrectMessageEl = document.createElement("h2");
-    incorrectMessageEl.textContent = "Wrong!";
-    divEl.appendChild(incorrectMessageEl);
+    if(questionNumber === 5) {
+        gameOver();
+    }
+    else {
+        displayQuestion();
+        // tell user they are incorrect
+        var incorrectMessageEl = document.createElement("h2");
+        incorrectMessageEl.textContent = "Wrong!";
+        divEl.appendChild(incorrectMessageEl);
 
-    // remove message after 2 seconds
-    setTimeout(removeMessage, 2000);
+        // remove message after 1 second
+        setTimeout(removeMessage, 1000);
+    }
 }
 
 function gameOver() {
