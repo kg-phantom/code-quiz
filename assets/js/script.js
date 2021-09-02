@@ -25,11 +25,12 @@ var answerButton = document.createElement("button");
 answerButton.id = "answer";
 
 function startTimer() {
-    //setInterval(function() {
-        timeLeft--;
-        timerEl.textContent = "Time: " + timeLeft; 
-    //}, 1000);
-    
+    timeLeft--;
+    timerEl.textContent = "Time: " + timeLeft;
+    // stop timer at 0
+    if(timeLeft > 0) {
+        setTimeout(startTimer, 1000);
+    }
 }
 
 function displayQuestion() {
@@ -40,16 +41,12 @@ function displayQuestion() {
 }
 
 startButton.addEventListener("click", function() {
-    // start timer
-    var startTimerInterval = setInterval(startTimer, 1000);
-
-    if(timeLeft === 0) {
-        clearInterval(startTimerInterval);
-    };
-
     // remove startButton and opening instructions
     startButton.remove();
     introEl.remove();
+    
+    // start timer
+        setTimeout(startTimer, 1000);
 
     // add .question class to h1
     h1El.className = "question";
