@@ -119,11 +119,37 @@ function incorrect() {
 
 function gameOver() {
     h1El.textContent = "All done!";
-    var choiceButtonEl = document.getElementsByClassName("choiceButton");
-    var scoreStatementEl = document.createElement("p");
-    scoreStatementEl.textContent = "Your score is: " + timeLeft;
 
-    // input intials to save score
+    // remove choiceButton elements
+    for(var i = 0; i < choiceButton.length; i++) {
+        choiceButton[i].remove();
+    }
+
+    // display score
+    var scoreStatementEl = document.createElement("p");
+    scoreStatementEl.textContent = "Your final score is: " + timeLeft;
+    scoreStatementEl.className = "game-over";
+    divEl.appendChild(scoreStatementEl);
+
+    // initials div
+    var initialDivEl = document.createElement("div");
+    initialDivEl.className = "initials";
+    divEl.appendChild(initialDivEl);
+    // tells user to input initials
+    var initialPromptEl = document.createElement("p");
+    initialPromptEl.className = "game-over";
+    initialPromptEl.id = "prompt";
+    initialPromptEl.textContent = "Enter initials: ";
+    initialDivEl.appendChild(initialPromptEl);
+    // text input for initials
+    var initialInput = document.createElement("input");
+    initialDivEl.appendChild(initialInput);
+    // submit button
+    var submitButtonEl = document.createElement("button");
+    submitButtonEl.setAttribute("type", "submit");
+    submitButtonEl.textContent = "Submit";
+    console.log(submitButtonEl);
+    initialDivEl.appendChild(submitButtonEl);
 }
 
 if(timeLeft === 0) {

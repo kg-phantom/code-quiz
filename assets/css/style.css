@@ -40,6 +40,27 @@ div p {
     font-size: 1.5em;
 }
 
+div p.game-over {
+    text-align: left;
+    font-size: 2em;
+}
+
+div #prompt {
+    width: 50%;
+}
+
+div.initials {
+    display: flex;
+    margin: 0px;
+    align-items: center;
+}
+
+div input {
+    width: 50%;
+    height: fit-content;
+    font-size: 1.5em;
+}
+
 div button {
     font-size: 1.3em;
     outline: none;
