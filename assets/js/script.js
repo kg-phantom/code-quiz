@@ -28,6 +28,8 @@ var choices = [
     ["1. JavaScript", "2. terminal/bash", "3. for loops", "4. console.log"]
 ];
 
+var highScores = [{i: ""}, {s: ""}];
+
 function startTimer() {
     var timerInterval = setInterval(function() {
         timeLeft--;
@@ -117,6 +119,28 @@ function incorrect() {
     setTimeout(removeMessage, 1000);
 }
 
+function saveHighScore(event) {
+    event.preventDefault();
+    var savedInitial = document.querySelector("input");
+    savedInitial.setAttribute("data-initial", savedInitial.value);
+    savedInitial.setAttribute("data-score", timeLeft);
+
+    // check if savedInitial is empty string
+    if(!savedInitial) {
+        alert("You need to type your initials!");
+        return;
+    }
+    
+    localStorage.setItem("initials", savedInitial.getAttribute("data-initial"));
+    localStorage.setItem("score", savedInitial.getAttribute("data-score"));
+
+    displayHighScores();
+}
+
+function displayHighScores() {
+    console.log(highScores);
+}
+
 function gameOver() {
     h1El.textContent = "All done!";
 
@@ -129,28 +153,34 @@ function gameOver() {
     var scoreStatementEl = document.createElement("p");
     scoreStatementEl.textContent = "Your final score is: " + timeLeft;
     scoreStatementEl.className = "game-over";
+
     divEl.appendChild(scoreStatementEl);
 
     // initials div
-    var initialDivEl = document.createElement("div");
-    initialDivEl.className = "initials";
-    divEl.appendChild(initialDivEl);
+    var initialFormEl = document.createElement("form");
+    initialFormEl.className = "initials";
+
+    divEl.appendChild(initialFormEl);
     // tells user to input initials
     var initialPromptEl = document.createElement("p");
     initialPromptEl.className = "game-over";
     initialPromptEl.id = "prompt";
     initialPromptEl.textContent = "Enter initials: ";
-    initialDivEl.appendChild(initialPromptEl);
+
+    initialFormEl.appendChild(initialPromptEl);
     // text input for initials
     var initialInput = document.createElement("input");
-    initialDivEl.appendChild(initialInput);
+
+    initialFormEl.appendChild(initialInput);
     // submit button
     var submitButtonEl = document.createElement("button");
     submitButtonEl.setAttribute("type", "submit");
     submitButtonEl.textContent = "Submit";
     submitButtonEl.id = "submit";
-    console.log(submitButtonEl);
-    initialDivEl.appendChild(submitButtonEl);
+
+    initialFormEl.appendChild(submitButtonEl);
+
+    initialFormEl.addEventListener("submit", saveHighScore);
 }
 
 if(timeLeft === 0) {
