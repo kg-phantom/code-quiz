@@ -52,6 +52,11 @@ function startPage() {
     while(document.querySelector("button")) {
         document.querySelector("button").remove();
     }
+
+    if(divEl.querySelector("p")) {
+        divEl.querySelector("p").remove();
+    }
+
     // recreate header 'view high scores' button, timer, h1, intro paragraph, and start button
     var viewHighScoresEl = document.createElement("button");
     viewHighScoresEl.id = "view-high-scores";
@@ -192,14 +197,24 @@ function displayHighScores() {
         document.querySelector("button").remove();
     }
 
-    var highScoreListEl = document.createElement("ol");
-
     highScores = localStorage.getItem("highscores");
-    console.log(highScores);
+
+    var highScoreListEl = document.createElement("ol");
+    divEl.appendChild(highScoreListEl);  
 
     if(!highScores) {
+        var NoScoresEl = document.createElement("p");
+        NoScoresEl.className = "game-over";
+        NoScoresEl.textContent = "There are no high scores yet!";
+        divEl.appendChild(NoScoresEl);
+        var backButtonEl = document.createElement("button");
+        backButtonEl.className = "high-scores";
+        backButtonEl.id = "back-btn";
+        backButtonEl.textContent = "Go back";
+        divEl.appendChild(backButtonEl);
+        backButtonEl.addEventListener("click", startPage);
         highScores = [];
-        return;
+        return false;
     }
 
     highScores = JSON.parse(highScores);
@@ -211,13 +226,13 @@ function displayHighScores() {
     }
     
     divEl.appendChild(highScoreListEl);
-
+    // back button
     var backButtonEl = document.createElement("button");
     backButtonEl.className = "high-scores";
     backButtonEl.id = "back-btn";
     backButtonEl.textContent = "Go back";
     divEl.appendChild(backButtonEl);
-
+    // clear high scores button
     var clearScoresButtonEl = document.createElement("button");
     clearScoresButtonEl.id = "clear-btn";
     clearScoresButtonEl.className = "high-scores";
@@ -225,6 +240,14 @@ function displayHighScores() {
     divEl.appendChild(clearScoresButtonEl);
     
     backButtonEl.addEventListener("click", startPage);
+    clearScoresButtonEl.addEventListener("click", clearScores);
+}
+
+function clearScores() {
+    highScores = [];
+    localStorage.setItem("highscores", "");
+
+    startPage();
 }
 
 function gameOver() {
@@ -279,15 +302,14 @@ function saveHighScore(event) {
         return;
     }
     
+    // create object for initial input and score
     var savedInitialObj = {
         initials: savedInitial.value,
-        score: (timeLeft - 1)
+        score: timeLeft
     }
 
     highScores.push(savedInitialObj);
-    console.log(highScores);
     localStorage.setItem("highscores", JSON.stringify(highScores));
-    console.log(localStorage.getItem("highscores"));
 
     displayHighScores();
 }

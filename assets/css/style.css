@@ -107,3 +107,71 @@ div ol {
     text-align: left;
     background-color: var(--tertiary);
 }
+
+@media screen and (max-width: 980px) {
+    div h1 {
+        font-size: 2em;
+    }
+
+    div p {
+        font-size: 1.25em;
+    }
+
+    div button {
+        font-size: 1.25em;
+        padding: 7px 12px;
+    }
+
+    div p.game-over {
+        font-size: 1.25em;
+    }
+
+    div button.choiceButton {
+        width: 35%;
+    }
+
+    form input {
+        width: 40%;
+        margin-right: 25px;
+        font-size: 1.25em;
+    }
+
+    form #submit {
+        width: 20%;
+    }
+}
+
+@media screen and (max-width: 575px) {
+    div {
+        width: 75%;
+    }
+
+    div button {
+        width: 50%;
+    }
+
+    div button.choiceButton {
+        width: 50%;
+    }
+
+    form.initials {
+        flex-wrap: wrap;
+    }
+
+    form #prompt {
+        width: 100%;
+    }
+
+    form input {
+        width: 100%;
+    }
+
+    form #submit {
+        width: 35%;
+        margin-top: 20px;
+    }
+
+    div ol {
+        font-size: 1.5em;
+    }
+}
