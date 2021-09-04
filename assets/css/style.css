@@ -1,6 +1,7 @@
 :root {
     --primary: rgb(63, 32, 88);
     --secondary: rgb(179, 46, 184);
+    --tertiary: rgba(141, 81, 143, 0.603);
 }
 
 header {
@@ -30,10 +31,6 @@ div {
 
 div h1 {
     font-size: 2.5em;
-}
-
-div h1.question {
-    text-align: left;
 }
 
 div p {
@@ -89,6 +86,10 @@ div button.choiceButton {
     text-align: left;
 }
 
+div button.high-scores {
+    margin: 5px;
+}
+
 div h2 {
     opacity: 0.5;
     font-weight: normal;
@@ -98,4 +99,11 @@ div h2 {
     margin-top: 40px;
     padding-top: 30px;
     border-top: 2px solid black;
+}
+
+div ol {
+    margin-top: 20px;
+    font-size: 2em;
+    text-align: left;
+    background-color: var(--tertiary);
 }

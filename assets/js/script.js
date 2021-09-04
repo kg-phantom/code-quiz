@@ -1,3 +1,5 @@
+var headerEl = document.querySelector("header");
+var viewHighScoresEl = document.querySelector("#view-high-scores");
 var timeLeft = 75;
 var timerEl = document.querySelector("#timer");
 timerEl.textContent = "Time: " + timeLeft;
@@ -33,11 +35,49 @@ var highScores = [{i: ""}, {s: ""}];
 function startTimer() {
     var timerInterval = setInterval(function() {
         timeLeft--;
+        let timerEl = document.querySelector("#timer");
         timerEl.textContent = "Time: " + timeLeft;
         if(timeLeft === 0 || questionNumber === 5) {
             clearInterval(timerInterval);
         }
     }, 1000);
+}
+
+function startPage() {
+    timeLeft = 75;
+    questionNumber = 0;
+
+    // remove high score page elements
+    document.querySelector("ol").remove();
+    while(document.querySelector("button")) {
+        document.querySelector("button").remove();
+    }
+    // recreate header 'view high scores' button, timer, h1, intro paragraph, and start button
+    var viewHighScoresEl = document.createElement("button");
+    viewHighScoresEl.id = "view-high-scores";
+    viewHighScoresEl.textContent = "View high scores";
+    headerEl.appendChild(viewHighScoresEl);
+
+    viewHighScoresEl.addEventListener("click", displayHighScores);
+
+    var timerEl = document.createElement("p");
+    timerEl.id = "timer";
+    timerEl.textContent = "Time: " + timeLeft;
+    headerEl.appendChild(timerEl);
+
+    h1El.textContent = "Code Quiz Challenge";
+    h1El.style.textAlign = "center";
+    var introEl = document.createElement("p");
+    introEl.id = "intro";
+    introEl.textContent = "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!";
+    divEl.appendChild(introEl);
+    
+    var startButton = document.createElement("button");
+    startButton.id = "start-btn";
+    startButton.textContent = "Start Quiz";
+    divEl.appendChild(startButton);
+
+    startButton.addEventListener("click", startQuiz);
 }
 
 function displayQuestion() {
@@ -51,16 +91,18 @@ function displayQuestion() {
 
 }
 
-startButton.addEventListener("click", function() {
+viewHighScoresEl.addEventListener("click", displayHighScores);
+
+function startQuiz() {
     // remove startButton and opening instructions
     startButton.remove();
     introEl.remove();
     
     // start timer
-        startTimer();
+    startTimer();
 
     // add .question class to h1
-    h1El.className = "question";
+    h1El.style.textAlign = "left";
     
     // create buttons for answer choices
     for(var i = 0; i < 4; i++) {
@@ -71,7 +113,9 @@ startButton.addEventListener("click", function() {
     }
     // display question 1
     displayQuestion();
-});
+}
+
+startButton.addEventListener("click", startQuiz);
 
 function removeMessage() {
     var h2El = document.querySelector("h2");
@@ -126,19 +170,51 @@ function saveHighScore(event) {
     savedInitial.setAttribute("data-score", timeLeft);
 
     // check if savedInitial is empty string
-    if(!savedInitial) {
+    if(!savedInitial.value) {
         alert("You need to type your initials!");
         return;
     }
     
     localStorage.setItem("initials", savedInitial.getAttribute("data-initial"));
     localStorage.setItem("score", savedInitial.getAttribute("data-score"));
+    console.log(localStorage.getItem("score"));
 
     displayHighScores();
 }
 
 function displayHighScores() {
-    console.log(highScores);
+    h1El.textContent = "High Scores";
+    h1El.style.textAlign = "left";
+
+    if(document.querySelector("form")) {
+        document.querySelector(".game-over").remove();
+        document.querySelector("form").remove();
+    }
+    
+    while(document.querySelector("p") && document.querySelector("button")) {
+        document.querySelector("p").remove();
+        document.querySelector("button").remove();
+    }
+
+    var highScoreListEl = document.createElement("ol");
+    var highScoreListItem = document.createElement("li");
+    highScoreListItem.textContent = "test";
+    highScoreListEl.appendChild(highScoreListItem);
+    divEl.appendChild(highScoreListEl);
+
+    var backButtonEl = document.createElement("button");
+    backButtonEl.className = "high-scores";
+    backButtonEl.id = "back-btn";
+    backButtonEl.textContent = "Go back";
+    divEl.appendChild(backButtonEl);
+
+    var clearScoresButtonEl = document.createElement("button");
+    clearScoresButtonEl.id = "clear-btn";
+    clearScoresButtonEl.className = "high-scores";
+    clearScoresButtonEl.textContent = "Clear high scores";
+    divEl.appendChild(clearScoresButtonEl);
+    
+    backButtonEl.addEventListener("click", startPage);
 }
 
 function gameOver() {
