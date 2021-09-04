@@ -95,6 +95,8 @@ viewHighScoresEl.addEventListener("click", displayHighScores);
 
 function startQuiz() {
     // remove startButton and opening instructions
+    let startButton = document.querySelector("#start-btn");
+    let introEl = document.querySelector("#intro");
     startButton.remove();
     introEl.remove();
     
