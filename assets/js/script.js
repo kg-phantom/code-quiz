@@ -30,7 +30,7 @@ var choices = [
     ["1. JavaScript", "2. terminal/bash", "3. for loops", "4. console.log"]
 ];
 
-var highScores = [{i: ""}, {s: ""}];
+var highScores = [];
 
 function startTimer() {
     var timerInterval = setInterval(function() {
@@ -124,6 +124,19 @@ function removeMessage() {
     h2El.remove();
 }
 
+divEl.addEventListener("click", function(event) {
+    var userChoice = event.target;
+    if(userChoice.className != "choiceButton") {
+        return;
+    }
+    else if(userChoice.textContent === questions[questionNumber].a) {
+        correct();
+    }
+    else {
+        incorrect();
+    }
+});
+
 function correct() {
     questionNumber++;
 
@@ -165,25 +178,6 @@ function incorrect() {
     setTimeout(removeMessage, 1000);
 }
 
-function saveHighScore(event) {
-    event.preventDefault();
-    var savedInitial = document.querySelector("input");
-    savedInitial.setAttribute("data-initial", savedInitial.value);
-    savedInitial.setAttribute("data-score", timeLeft);
-
-    // check if savedInitial is empty string
-    if(!savedInitial.value) {
-        alert("You need to type your initials!");
-        return;
-    }
-    
-    localStorage.setItem("initials", savedInitial.getAttribute("data-initial"));
-    localStorage.setItem("score", savedInitial.getAttribute("data-score"));
-    console.log(localStorage.getItem("score"));
-
-    displayHighScores();
-}
-
 function displayHighScores() {
     h1El.textContent = "High Scores";
     h1El.style.textAlign = "left";
@@ -199,9 +193,23 @@ function displayHighScores() {
     }
 
     var highScoreListEl = document.createElement("ol");
-    var highScoreListItem = document.createElement("li");
-    highScoreListItem.textContent = "test";
-    highScoreListEl.appendChild(highScoreListItem);
+
+    highScores = localStorage.getItem("highscores");
+    console.log(highScores);
+
+    if(!highScores) {
+        highScores = [];
+        return;
+    }
+
+    highScores = JSON.parse(highScores);
+
+    for(var i = 0; i < highScores.length; i++) {
+        var highScoreListItem = document.createElement("li");
+        highScoreListItem.textContent = highScores[i].initials + " - " + highScores[i].score;
+        highScoreListEl.appendChild(highScoreListItem);
+    }
+    
     divEl.appendChild(highScoreListEl);
 
     var backButtonEl = document.createElement("button");
@@ -229,7 +237,7 @@ function gameOver() {
 
     // display score
     var scoreStatementEl = document.createElement("p");
-    scoreStatementEl.textContent = "Your final score is: " + timeLeft;
+    scoreStatementEl.textContent = "Your final score is: " + (timeLeft - 1);
     scoreStatementEl.className = "game-over";
 
     divEl.appendChild(scoreStatementEl);
@@ -261,19 +269,29 @@ function gameOver() {
     initialFormEl.addEventListener("submit", saveHighScore);
 }
 
+function saveHighScore(event) {
+    event.preventDefault();
+    var savedInitial = document.querySelector("input");
+
+    // check if savedInitial is empty string
+    if(!savedInitial.value) {
+        alert("You need to type your initials!");
+        return;
+    }
+    
+    var savedInitialObj = {
+        initials: savedInitial.value,
+        score: (timeLeft - 1)
+    }
+
+    highScores.push(savedInitialObj);
+    console.log(highScores);
+    localStorage.setItem("highscores", JSON.stringify(highScores));
+    console.log(localStorage.getItem("highscores"));
+
+    displayHighScores();
+}
+
 if(timeLeft === 0) {
     gameOver();
 }
-
-divEl.addEventListener("click", function(event) {
-    var userChoice = event.target;
-    if(userChoice.className != "choiceButton") {
-        return;
-    }
-    else if(userChoice.textContent === questions[questionNumber].a) {
-        correct();
-    }
-    else {
-        incorrect();
-    }
-});
