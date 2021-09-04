@@ -44,6 +44,7 @@ div p.game-over {
 
 form.initials {
     display: flex;
+    flex-wrap: wrap;
     width: 100%;
     margin: 0px;
     align-items: center;
@@ -152,10 +153,6 @@ div ol {
 
     div button.choiceButton {
         width: 50%;
-    }
-
-    form.initials {
-        flex-wrap: wrap;
     }
 
     form #prompt {

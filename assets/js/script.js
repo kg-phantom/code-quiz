@@ -307,7 +307,7 @@ function saveHighScore(event) {
         initials: savedInitial.value,
         score: timeLeft
     }
-
+    
     highScores.push(savedInitialObj);
     localStorage.setItem("highscores", JSON.stringify(highScores));
 

@@ -1,6 +1,8 @@
 # Code Quiz
 A timed quiz on the fundamentals of Javascript that saves high scores.
 
+https://kg-phantom.github.io/code-quiz/
+
 <img src="./assets/images/code-quiz-screenshot.PNG" />
 
 ## Timer
