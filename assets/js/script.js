@@ -35,12 +35,18 @@ var highScores = [];
 function startTimer() {
     var timerInterval = setInterval(function() {
         timeLeft--;
-        let timerEl = document.querySelector("#timer");
-        timerEl.textContent = "Time: " + timeLeft;
-        if(timeLeft === 0 || questionNumber === 5) {
+        timerEl = document.querySelector("#timer");
+        
+        if(timeLeft <= 0 || questionNumber === 5) {
             clearInterval(timerInterval);
+            gameOver();
         }
-    }, 1000);
+        else if(!timerEl) {
+            clearInterval(timerInterval);
+            return;
+        }
+        timerEl.textContent = "Time: " + timeLeft;
+    }, 1000)
 }
 
 function startPage() {
@@ -65,7 +71,7 @@ function startPage() {
 
     viewHighScoresEl.addEventListener("click", displayHighScores);
 
-    var timerEl = document.createElement("p");
+    timerEl = document.createElement("p");
     timerEl.id = "timer";
     timerEl.textContent = "Time: " + timeLeft;
     headerEl.appendChild(timerEl);
@@ -86,6 +92,10 @@ function startPage() {
 }
 
 function displayQuestion() {
+    if(!questions[questionNumber]) {
+        return;
+    }
+
     // display question in h1El
     h1El.textContent = questions[questionNumber].q;
     
@@ -93,10 +103,7 @@ function displayQuestion() {
     for(var i = 0; i < 4; i++) {
         choiceButton[i].textContent = choices[questionNumber][i];
     }
-
 }
-
-viewHighScoresEl.addEventListener("click", displayHighScores);
 
 function startQuiz() {
     // remove startButton and opening instructions
@@ -122,33 +129,15 @@ function startQuiz() {
     displayQuestion();
 }
 
-startButton.addEventListener("click", startQuiz);
-
 function removeMessage() {
     var h2El = document.querySelector("h2");
     h2El.remove();
 }
 
-divEl.addEventListener("click", function(event) {
-    var userChoice = event.target;
-    if(userChoice.className != "choiceButton") {
-        return;
-    }
-    else if(userChoice.textContent === questions[questionNumber].a) {
-        correct();
-    }
-    else {
-        incorrect();
-    }
-});
-
 function correct() {
     questionNumber++;
 
-    if(questionNumber === 5) {
-        gameOver();
-    }
-    else {
+    if(timeLeft > 0 || questionNumber < 4) {
         displayQuestion();
     }
 
@@ -157,8 +146,8 @@ function correct() {
     correctMessageEl.textContent = "Correct!";
     divEl.appendChild(correctMessageEl);
 
-    // remove message after 1 second
-    setTimeout(removeMessage, 1000);
+    // remove message after .5 seconds
+    setTimeout(removeMessage, 500);
 }
 
 function incorrect() {
@@ -166,12 +155,8 @@ function incorrect() {
     // decrease time by 10 seconds for penalty
     timeLeft -= 10;
 
-    if(questionNumber === 5) {
-        gameOver();
-    }
-    else {
+    if(timeLeft > 0 || questionNumber < 4) {
         displayQuestion();
-        
     }
 
     // tell user they are incorrect
@@ -179,21 +164,25 @@ function incorrect() {
     incorrectMessageEl.textContent = "Wrong!";
     divEl.appendChild(incorrectMessageEl);
 
-    // remove message after 1 second
-    setTimeout(removeMessage, 1000);
+    // remove message after .5 seconds
+    setTimeout(removeMessage, 500);
 }
 
 function displayHighScores() {
     h1El.textContent = "High Scores";
     h1El.style.textAlign = "left";
 
+    // remove previous elements
     if(document.querySelector("form")) {
         document.querySelector(".game-over").remove();
         document.querySelector("form").remove();
     }
     
-    while(document.querySelector("p") && document.querySelector("button")) {
+    while(document.querySelector("p")) {
         document.querySelector("p").remove();
+    }
+
+    while(document.querySelector("button")) {
         document.querySelector("button").remove();
     }
 
@@ -203,6 +192,7 @@ function displayHighScores() {
     divEl.appendChild(highScoreListEl);  
 
     if(!highScores) {
+        // say there are no scores yet
         var NoScoresEl = document.createElement("p");
         NoScoresEl.className = "game-over";
         NoScoresEl.textContent = "There are no high scores yet!";
@@ -247,7 +237,8 @@ function clearScores() {
     highScores = [];
     localStorage.setItem("highscores", "");
 
-    startPage();
+    alert("High scores cleared!");
+    startPage();  
 }
 
 function gameOver() {
@@ -260,10 +251,12 @@ function gameOver() {
 
     // display score
     var scoreStatementEl = document.createElement("p");
-    scoreStatementEl.textContent = "Your final score is: " + (timeLeft - 1);
+    scoreStatementEl.textContent = "Your final score is: " + timeLeft;
     scoreStatementEl.className = "game-over";
 
     divEl.appendChild(scoreStatementEl);
+
+    timerEl.textContent = "Time: " + timeLeft;
 
     // initials div
     var initialFormEl = document.createElement("form");
@@ -308,12 +301,26 @@ function saveHighScore(event) {
         score: timeLeft
     }
     
+    // add to array of high scores
     highScores.push(savedInitialObj);
     localStorage.setItem("highscores", JSON.stringify(highScores));
 
     displayHighScores();
 }
 
-if(timeLeft === 0) {
-    gameOver();
-}
+viewHighScoresEl.addEventListener("click", displayHighScores);
+
+startButton.addEventListener("click", startQuiz);
+
+divEl.addEventListener("click", function(event) {
+    var userChoice = event.target;
+    if(userChoice.className != "choiceButton") {
+        return;
+    }
+    else if(userChoice.textContent === questions[questionNumber].a) {
+        correct();
+    }
+    else {
+        incorrect();
+    }
+});
