@@ -14,3 +14,5 @@ When all the questions have been answered or the timer reaches 0, the game is ov
 
 ## High Score
 Once the game has ended, the user can save their initals and score.
+
+Previous scores can be viewed by clicking on the "View High Scores" button.
