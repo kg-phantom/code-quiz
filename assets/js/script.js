@@ -251,6 +251,12 @@ function gameOver() {
 
     // display score
     var scoreStatementEl = document.createElement("p");
+
+    // no negative scores
+    if(timeLeft < 0) {
+        timeLeft = 0;
+    };
+    
     scoreStatementEl.textContent = "Your final score is: " + timeLeft;
     scoreStatementEl.className = "game-over";
 
